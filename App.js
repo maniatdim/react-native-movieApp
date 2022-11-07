@@ -1,7 +1,22 @@
-import React from 'react';
+import {React, useState} from 'react';
 import {Text, View} from 'react-native';
+import axios from 'axios';
 
-const HelloWorldApp = () => {
+const getMovies = async () => {
+  const resp = await axios.get(
+    'https://api.themoviedb.org/3/movie/550?api_key=46bdc290ee5b68255e0fc905786d4514',
+  );
+
+  return resp.data.results;
+};
+
+const App = () => {
+  const [movie, setMovie] = useState('');
+
+  getMovies().then(movies => {
+    setMovie(movies[0]);
+  });
+
   return (
     <View
       style={{
@@ -9,9 +24,9 @@ const HelloWorldApp = () => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text>Hello, world!</Text>
+      <Text>{movie.original_title}</Text>
     </View>
   );
 };
 
-export default HelloWorldApp;
+export default App;
